@@ -29,7 +29,7 @@ Use it in a playbook as follows:
 ```yaml
 - hosts: all
   roles:
-    - cloudalchemy.Ansible-monitoring-deployment
+    - allaboutopensource.Ansible-monitoring-deployment
 ```
 
 ## Local Testing

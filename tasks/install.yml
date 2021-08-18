@@ -1,14 +1,14 @@
 ---
-- name: Create the <<APPLICATION>> group
+- name: Create the Ansible-monitoring-deployment group
   group:
-    name: "{{ <<APPLICATION>>_system_group }}"
+    name: "{{ Ansible-monitoring-deployment_system_group }}"
     state: present
     system: true
 
-- name: Create the <<APPLICATION>> user
+- name: Create the Ansible-monitoring-deployment user
   user:
-    name: "{{ <<APPLICATION>>_system_user }}"
-    groups: "{{ <<APPLICATION>>_system_group }}"
+    name: "{{ Ansible-monitoring-deployment_system_user }}"
+    groups: "{{ Ansible-monitoring-deployment_system_group }}"
     append: true
     shell: /usr/sbin/nologin
     system: true

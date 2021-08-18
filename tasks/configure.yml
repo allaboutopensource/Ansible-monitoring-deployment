@@ -1,9 +1,9 @@
 ---
-- name: Copy the <<APPLICATION>> systemd service file
+- name: Copy the Ansible-monitoring-deployment systemd service file
   template:
-    src: <<APPLICATION>>.service.j2
-    dest: /etc/systemd/system/<<APPLICATION>>.service
+    src: Ansible-monitoring-deployment.service.j2
+    dest: /etc/systemd/system/Ansible-monitoring-deployment.service
     owner: root
     group: root
     mode: 0644
-  notify: restart <<APPLICATION>>
+  notify: restart Ansible-monitoring-deployment

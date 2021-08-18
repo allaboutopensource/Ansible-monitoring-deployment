@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Ansible-monitoring-deployment
+After=network-online.target
+StartLimitInterval=0
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User={{ Ansible-monitoring-deployment_system_user }}
+Group={{ Ansible-monitoring-deployment_system_group }}
+ExecStart=/usr/local/bin/Ansible-monitoring-deployment
+SyslogIdentifier=Ansible-monitoring-deployment
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

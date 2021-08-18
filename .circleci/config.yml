@@ -1,9 +1,4 @@
 ---
-#
-# This is a dummy config to make branch protection tests pass.
-#
-# The real skeleton config is /circleci-config.yml
-#
 version: 2.1
 
 executors:
@@ -21,6 +16,7 @@ jobs:
       - checkout
       - run: pip install ansible ansible-lint yamllint flake8
       - run: mkdir -p .cache/roles && ln -s ../.. .cache/roles/${CIRCLE_PROJECT_REPONAME}
+      - run: ansible-lint
       - run: yamllint .
       - run: flake8
 
@@ -35,6 +31,34 @@ jobs:
       - run: ln -s ~/project ~/${CIRCLE_PROJECT_REPONAME}
       - run: pip install "ansible~=<<parameters.ansible >>.0"
       - run: pip install -r test-requirements.txt
+      - run: molecule test -s default --destroy always
+      - run: |
+         if [[ -d 'molecule/alternative' ]]; then
+           molecule test -s alternative --destroy always
+         else
+           echo 'No alternative test'
+         fi
+      - run: |
+         if [[ -z "${CIRCLE_PULL_REQUEST}" ]] && [[ -d 'molecule/latest' ]]; then
+           molecule test -s latest --destroy always
+         else
+           echo 'Not running latest on PR'
+         fi
+  release:
+    executor: publisher
+    steps:
+      - checkout
+      - run: |
+          PROJECT_USERNAME="${CIRCLE_PROJECT_USERNAME}" \
+          PROJECT_REPONAME="${CIRCLE_PROJECT_REPONAME}" \
+          create_release
+
+  galaxy:
+    executor: python
+    steps:
+      - checkout
+      - run: pip install ansible
+      - run: ansible-galaxy role import --token "${GALAXY_TOKEN}" "${CIRCLE_PROJECT_USERNAME}" "${CIRCLE_PROJECT_REPONAME}"
 
 workflows:
   version: 2
@@ -53,3 +77,22 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - release:
+          context: release
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
+      - galaxy:
+          context: galaxy
+          requires:
+            - lint
+            - test
+            - release
+          filters:
+            branches:
+              only: master

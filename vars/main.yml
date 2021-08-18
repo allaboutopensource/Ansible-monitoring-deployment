@@ -8,5 +8,5 @@ go_arch_map:
 
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
 
-<<APPLICATION>>_system_user: "<<APPLICATION>>"
-<<APPLICATION>>_system_group: "<<APPLICATION>>"
+Ansible-monitoring-deployment_system_user: "Ansible-monitoring-deployment"
+Ansible-monitoring-deployment_system_group: "Ansible-monitoring-deployment"

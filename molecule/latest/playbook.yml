@@ -3,6 +3,6 @@
   hosts: all
   any_errors_fatal: true
   roles:
-    - ansible-<<APPLICATION>>
+    - ansible-Ansible-monitoring-deployment
   vars:
-    <<APPLICATION>>: latest
+    Ansible-monitoring-deployment: latest

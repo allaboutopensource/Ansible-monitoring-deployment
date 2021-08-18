@@ -7,7 +7,7 @@
 
 ## Description
 
-Deploy [Ansible-monitoring-deployment](https://github.com/prometheus/Ansible-monitoring-deployment) using ansible.
+Deploy Ansible-monitoring-deployment using ansible.
 
 ## Requirements
 
